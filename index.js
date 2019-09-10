@@ -1,29 +1,27 @@
-import { getHTML, getTwitterData, getInstagramData } from './lib/scraper';
-const USER = 'clint_milner';
+import express from 'express';
+import db from './lib/db';
+import './lib/cron';
+import {getInstagramCount, getTwitterCount} from './lib/scraper';
 
-async function go() {
-    const twitterHTML = await getHTML(`https://twitter.com/${USER}`);
-    const instagramHTML = await getHTML(`https://www.instagram.com/${USER}/?__a=1`);
-    const twitterTweetCount = await getTwitterData(twitterHTML, 'tweets');
-    const twitterFollowingCount = await getTwitterData(twitterHTML, 'following');
-    const twitterFollowerCount = await getTwitterData(twitterHTML, 'followers');
-    const twitterLikeCount = await getTwitterData(twitterHTML, 'favorites');
-    const instagramPostCount = await getInstagramData(instagramHTML, 'posts');
-    const instagramFollowingCount = await getInstagramData(instagramHTML, 'following');
-    const instagramFollowerCount = await getInstagramData(instagramHTML, 'followers');
-    // const instagramUserName = await getInstagramData(instagramHTML, 'full_name');
-    // const instagramProfilePic = await getInstagramData(instagramHTML, 'profile_pic');
+const PORT = 9999;
+const app = express();
 
-    console.log('twitterTweetCount', twitterTweetCount);
-    console.log('twitterFollowingCount', twitterFollowingCount);
-    console.log('twitterFollowerCount', twitterFollowerCount);
-    console.log('twitterLikeCount', twitterLikeCount);
-    console.log('=================================');
-    console.log('instagramPostCount', instagramPostCount);
-    console.log('instagramFollowingCount', instagramFollowingCount);
-    console.log('instagramFollowerCount', instagramFollowerCount);
-    // console.log('instagramUserName', instagramUserName);
-    // console.log('instagramProfilePic', instagramProfilePic);
-}
+app.get('/scrape', async (req, res, next) => {
+    console.log('getting all the data');
+    const [twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount, instagramPostCount, instagramFollowingCount, instagramFollowerCount] = await Promise.all([getTwitterCount('tweets'), getTwitterCount('following'), getTwitterCount('followers'), getTwitterCount('favorites'), getInstagramCount('posts'), getInstagramCount('following'), getInstagramCount('followers')]);
+    // db.get('twitter').push({ timestamp, twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount }).write();
+    // db.get('instagram').push({ timestamp, instagramPostCount, instagramFollowingCount, instagramFollowerCount }).write();
+    res.json({
+        twitterTweetCount,
+        twitterFollowerCount,
+        twitterFollowingCount,
+        twitterLikeCount,
+        instagramPostCount,
+        instagramFollowingCount,
+        instagramFollowerCount
+    })
+});
 
-go();
+app.listen(PORT, () => {
+    console.log(`Server listening on localhost:${PORT}`);
+});
