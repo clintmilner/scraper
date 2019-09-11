@@ -6,7 +6,8 @@ const PORT = 9999;
 const app = express();
 
 app.get('/scrape', async (req, res, next) => {
-    const [twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount, instagramPostCount, instagramFollowingCount, instagramFollowerCount] = await Promise.all([getTwitterCount('tweets'), getTwitterCount('following'), getTwitterCount('followers'), getTwitterCount('favorites'), getInstagramCount('posts'), getInstagramCount('following'), getInstagramCount('followers')]);
+    // const [twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount, instagramPostCount, instagramFollowingCount, instagramFollowerCount] = await Promise.all([getTwitterCount('tweets'), getTwitterCount('following'), getTwitterCount('followers'), getTwitterCount('favorites'), getInstagramCount('posts'), getInstagramCount('following'), getInstagramCount('followers')]);
+    const [instagramPostCount] = await Promise.all([getInstagramCount('followers')]);
 
     // we won't write to the file if we're just hitting the endpoint...
     // db.get('twitter').push({ timestamp, twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount }).write();
@@ -14,13 +15,13 @@ app.get('/scrape', async (req, res, next) => {
 
     console.log('returning the latest data');
     res.json({
-        twitterTweetCount,
-        twitterFollowerCount,
-        twitterFollowingCount,
-        twitterLikeCount,
+        // twitterTweetCount,
+        // twitterFollowerCount,
+        // twitterFollowingCount,
+        // twitterLikeCount,
         instagramPostCount,
-        instagramFollowingCount,
-        instagramFollowerCount
+        // instagramFollowingCount,
+        // instagramFollowerCount
     })
 });
 
