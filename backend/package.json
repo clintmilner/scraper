@@ -1,28 +1,29 @@
 {
-  "name" : "scraper",
-  "version" : "1.0.0",
-  "description" : "",
-  "main" : "index.js",
-  "scripts" : {
-    "dev" : "nodemon -r esm index.js --ignore db.json"
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r esm index.js --ignore db.json"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "git+https://github.com/clintmilner/scraper.git"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clintmilner/scraper.git"
   },
-  "author" : "Clint Milner",
-  "license" : "ISC",
-  "bugs" : {
-    "url" : "https://github.com/clintmilner/scraper/issues"
+  "author": "Clint Milner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clintmilner/scraper/issues"
   },
-  "homepage" : "https://github.com/clintmilner/scraper#readme",
-  "dependencies" : {
-    "axios" : "^0.19.0",
-    "cheerio" : "^1.0.0-rc.3",
-    "esm" : "^3.2.25",
-    "express" : "^4.17.1",
-    "lowdb" : "^1.0.0",
-    "node-cron" : "^2.0.3",
-    "nodemon" : "^1.19.2"
+  "homepage": "https://github.com/clintmilner/scraper#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "node-cron": "^2.0.3",
+    "nodemon": "^1.19.2"
   }
 }
