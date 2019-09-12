@@ -9,7 +9,7 @@ export default function Data() {
             <h2>Your Data:</h2>
             <ul>
                 {
-                    scrapes.twitter.map(({twitterFollowerCount, twitterFollowingCount, twitterLikeCount, twitterTweetCount, timestamp}, idx) => {
+                    scrapes.twitter.map(({twitterFollowerCount = 0, twitterFollowingCount = 0, twitterLikeCount = 0, twitterTweetCount = 0, timestamp = 0}, idx) => {
                         return (
                             <li key={idx}>{formatDistance(new Date(timestamp), new Date())} ago - {`TWEETS:${twitterTweetCount}  FOLLOWERS:${twitterFollowerCount}  FOLLOWING:${twitterFollowingCount}  LIKES:${twitterLikeCount}`}</li>
                         );

@@ -2,7 +2,7 @@ import express from 'express';
 import './lib/cron';
 import db from './lib/db';
 import cors from 'cors';
-import {getInstagramCount, getTwitterCount} from './lib/scraper';
+import {getTwitterCount} from './lib/scraper';
 
 const PORT = 9999;
 const app = express();
@@ -27,11 +27,41 @@ app.get('/scrape', async (req, res, next) => {
 });
 
 app.get('/data', async (req, res, next) => {
-   // get the scraped data
-   // respond with JSON
-   const twitter = db.value();
+    // get the scraped data
+    // respond with JSON
+    const {twitter: twitterArr} = db.value();
+    const twitterTweetCount = twitterArr
+        .filter(({twitterTweetCount: tweets}, idx) => (idx === 0 || tweets !== twitterArr[idx - 1]['twitterTweetCount']))
+        .map(({twitterTweetCount: tweets, timestamp: ts}) => ({
+            twitterTweetCount: tweets,
+            timestamp: ts
+        }));
+    const twitterFollowingCount = twitterArr
+        .filter(({twitterFollowingCount: following}, idx) => (idx === 0 || following !== twitterArr[idx - 1]['twitterFollowingCount']))
+        .map(({twitterFollowingCount: following, timestamp: ts}) => ({
+            twitterFollowingCount: following,
+            timestamp: ts
+        }));
+    const twitterFollowerCount = twitterArr
+        .filter(({twitterFollowerCount: followers}, idx) => (idx === 0 || followers !== twitterArr[idx - 1]['twitterFollowerCount']))
+        .map(({twitterFollowerCount: followers, timestamp: ts}) => ({
+            twitterFollowerCount: followers,
+            timestamp: ts
+        }));
+    const twitterLikeCount = twitterArr
+        .filter(({twitterLikeCount: likes}, idx) => (idx === 0 || likes !== twitterArr[idx - 1]['twitterLikeCount']))
+        .map(({twitterLikeCount: likes, timestamp: ts}) => ({
+            twitterLikeCount: likes,
+            timestamp: ts
+        }));
+    const twitter = {
+        twitterTweetCount,
+        twitterFollowingCount,
+        twitterFollowerCount,
+        twitterLikeCount
+    };
 
-   res.json(twitter);
+    res.json(twitter);
 });
 
 app.listen(PORT, () => {
