@@ -10,11 +10,7 @@ app.get('/scrape', async (req, res, next) => {
     const [twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount] = await Promise.all([getTwitterCount('tweets'), getTwitterCount('following'), getTwitterCount('followers'), getTwitterCount('favorites')]);
     // const [instagramPostCount] = await Promise.all([getInstagramCount('followers')]);
 
-    // we won't write to the file if we're just hitting the endpoint...
-    // db.get('twitter').push({ timestamp, twitterTweetCount, twitterFollowingCount, twitterFollowerCount, twitterLikeCount }).write();
-    // db.get('instagram').push({ timestamp, instagramPostCount, instagramFollowingCount, instagramFollowerCount }).write();
-
-    console.log('returning the latest data');
+    console.log(`Latest Twitter Data \nTWEETS:${twitterTweetCount} \nFOLLOWERS:${twitterFollowerCount} \nFOLLOWING:${twitterFollowingCount} \nLIKES:${twitterLikeCount}`);
     res.json({
         twitterTweetCount,
         twitterFollowerCount,
